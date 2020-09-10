@@ -39,9 +39,19 @@ class Shift
      */
     private $dependencies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="shift")
+     */
+    private $shiftWorks;
+
+    /**
+     * EVT master?? für z.b Behandlungsstuhl
+     */
+
     public function __construct()
     {
         $this->dependencies = new ArrayCollection();
+        $this->shiftWorks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,6 +120,37 @@ class Shift
             // set the owning side to null (unless already changed)
             if ($dependency->getShift() === $this) {
                 $dependency->setShift(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShiftWork[]
+     */
+    public function getShiftWorks(): Collection
+    {
+        return $this->shiftWorks;
+    }
+
+    public function addShiftWork(ShiftWork $shiftWork): self
+    {
+        if (!$this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks[] = $shiftWork;
+            $shiftWork->setShift($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShiftWork(ShiftWork $shiftWork): self
+    {
+        if ($this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks->removeElement($shiftWork);
+            // set the owning side to null (unless already changed)
+            if ($shiftWork->getShift() === $this) {
+                $shiftWork->setShift(null);
             }
         }
 

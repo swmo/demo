@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Block;
 use App\Entity\Dependency;
+use App\Entity\Resource;
 use App\Entity\ResourceGroup;
 use App\Entity\Shift;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;

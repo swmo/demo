@@ -29,9 +29,15 @@ class Resource
      */
     private $resourceGroup;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="resource")
+     */
+    private $shiftWorks;
+
     public function __construct()
     {
         $this->resourceGroup = new ArrayCollection();
+        $this->shiftWorks = new ArrayCollection();
     }
 
 
@@ -73,6 +79,37 @@ class Resource
     {
         if ($this->resourceGroup->contains($resourceGroup)) {
             $this->resourceGroup->removeElement($resourceGroup);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShiftWork[]
+     */
+    public function getShiftWorks(): Collection
+    {
+        return $this->shiftWorks;
+    }
+
+    public function addShiftWork(ShiftWork $shiftWork): self
+    {
+        if (!$this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks[] = $shiftWork;
+            $shiftWork->setResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShiftWork(ShiftWork $shiftWork): self
+    {
+        if ($this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks->removeElement($shiftWork);
+            // set the owning side to null (unless already changed)
+            if ($shiftWork->getResource() === $this) {
+                $shiftWork->setResource(null);
+            }
         }
 
         return $this;

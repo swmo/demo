@@ -2,9 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Dependency;
 use App\Entity\Resource;
 use App\Entity\ResourceGroup;
 use App\Entity\Shift;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -15,8 +17,7 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
-        $shift = new Shift();
-         
+
         $resourceGroupDa = new ResourceGroup();
         $resourceGroupDa->setName('Dentalassistentin');
         $resourceGroupDa->setCode('dentalassistant');
@@ -61,6 +62,27 @@ class AppFixtures extends Fixture
         $resource->setName('Dentalhygiene 01');
         $resource->addResourceGroup($resourceGroupDh);
         $manager->persist($resource);
+
+
+
+        $shift = new Shift();
+        $shift->setStart(new DateTime('2020-01-01 08:00'));
+        $shift->setEnd(new DateTime('2020-01-01 12:00'));
+        $shift->setName('Schicht 02');
+        $manager->persist($shift);
+
+        $dependency = new Dependency();
+        $dependency->setNumber(2)
+        ->setResourceGroup($resourceGroupDa)
+        ->setShift($shift);
+        $manager->persist($dependency);
+
+        $dependency = new Dependency();
+        $dependency->setNumber(1)
+        ->setResourceGroup($resourceGroupD)
+        ->setShift($shift);
+        $manager->persist($dependency);
+
 
         $manager->flush();
     }

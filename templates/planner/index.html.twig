@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PlannerController!{% endblock %}
+
+{% block body %}
+
+
+<h1>Shifts</h1>
+<ul>
+    {% for shift in shifts %}
+        <li>{{ shift.name }} {{ shift.start|date("d.m.Y h:i") }} - {{ shift.end|date("d.m.Y h:i") }} 
+            <br>
+            needs: <br />
+            {% for dependency in shift.dependencies %}
+              - {{ dependency.number }}x  {{ dependency.resourceGroup }} <br />
+            {% endfor %}
+
+        </li>
+    {% endfor %}
+</ul>
+
+
+<h1>Resources</h1>
+<ul>
+    {% for resource in resources %}
+        <li>{{ resource.name }} (
+   {% for group in resource.resourceGroup %}
+   {{ group.name }} 
+          {% endfor %}
+        )
+        
+       
+    
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
