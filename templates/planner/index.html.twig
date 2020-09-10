@@ -35,4 +35,55 @@
     {% endfor %}
 </ul>
 
+
+
+    {% for managedShift in managedShifts %}
+
+    <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
+
+    {% if managedShift.isWrongBooked == true %}
+        <span style="color:red">Error auf der Buchung ist eine fehlerhafte Einteilung vorhanden</span>
+
+         <h2>Fehlerhafte Buchungen</h2> <br>
+
+        {% for nm in managedShift.getWrongBooked() %} 
+          {{nm.openNumber}} {{nm.resourceGroup.name}} 
+            {% for shiftWork in nm.shiftWorks %} <br>
+               --  {{shiftWork.resource.name}}
+            {% endfor %}
+       {% endfor %}
+
+    {% endif %}
+
+        <h2>notwendige Buchungen:</h2> <br>
+       {% for nm in managedShift.getOpen() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
+              {% for shiftWork in nm.shiftWorks %} 
+               --  {{shiftWork.resource.name}} bereits gebucht
+            {% endfor %}
+            <br>
+       {% endfor %}
+
+
+        <h2>gemachte Buchungen:</h2> <br>
+       {% for nm in managedShift.getBooked() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} 
+              {% for shiftWork in nm.shiftWorks %} <br>
+               --  {{shiftWork.resource.name}} <br>
+            {% endfor %}
+       {% endfor %}
+
+        <h2>Abgeschlossene Abhängikeiten:</h2> <br>
+       {% for nm in managedShift.getSuccessfullDepenendcies() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
+              {% for shiftWork in nm.shiftWorks %} 
+               --  {{shiftWork.resource.name}} <br>
+            {% endfor %}
+       {% endfor %}
+
+      
+
+    {% endfor %}
+
+
 {% endblock %}

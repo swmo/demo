@@ -39,10 +39,16 @@ class ResourceGroup
      */
     private $resources;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="resourceGroup")
+     */
+    private $shiftWorks;
+
     public function __construct()
     {
         $this->dependencies = new ArrayCollection();
         $this->resources = new ArrayCollection();
+        $this->shiftWorks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,5 +142,36 @@ class ResourceGroup
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|ShiftWork[]
+     */
+    public function getShiftWorks(): Collection
+    {
+        return $this->shiftWorks;
+    }
+
+    public function addShiftWork(ShiftWork $shiftWork): self
+    {
+        if (!$this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks[] = $shiftWork;
+            $shiftWork->setResourceGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShiftWork(ShiftWork $shiftWork): self
+    {
+        if ($this->shiftWorks->contains($shiftWork)) {
+            $this->shiftWorks->removeElement($shiftWork);
+            // set the owning side to null (unless already changed)
+            if ($shiftWork->getResourceGroup() === $this) {
+                $shiftWork->setResourceGroup(null);
+            }
+        }
+
+        return $this;
     }
 }

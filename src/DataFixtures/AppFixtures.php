@@ -6,6 +6,7 @@ use App\Entity\Dependency;
 use App\Entity\Resource;
 use App\Entity\ResourceGroup;
 use App\Entity\Shift;
+use App\Entity\ShiftWork;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -28,6 +29,7 @@ class AppFixtures extends Fixture
         $resourceGroupDh->setCode('dentalhygienist');
         $manager->persist($resourceGroupDh);
 
+
         $resourceGroupD = new ResourceGroup();
         $resourceGroupD->setName('Zahnarzt');
         $resourceGroupD->setCode('dentist');
@@ -43,20 +45,25 @@ class AppFixtures extends Fixture
         $resource->addResourceGroup($resourceGroupB);
         $manager->persist($resource);
 
-        $resource = new Resource();
-        $resource->setName('C350 right Stuhl');
-        $resource->addResourceGroup($resourceGroupB);
-        $manager->persist($resource);
+        $resourceC350right = new Resource();
+        $resourceC350right->setName('C350 right Stuhl');
+        $resourceC350right->addResourceGroup($resourceGroupB);
+        $manager->persist($resourceC350right);
 
-        $resource = new Resource();
-        $resource->setName('Behanlder 01');
-        $resource->addResourceGroup($resourceGroupD);
-        $manager->persist($resource);
+        $resourceBehandler01 = new Resource();
+        $resourceBehandler01->setName('Behanlder 01');
+        $resourceBehandler01->addResourceGroup($resourceGroupD);
+        $manager->persist($resourceBehandler01);
 
-        $resource = new Resource();
-        $resource->setName('Dentalassistentin 01');
-        $resource->addResourceGroup($resourceGroupDa);
-        $manager->persist($resource);
+        $resourceDentalassistentin01 = new Resource();
+        $resourceDentalassistentin01->setName('Dentalassistentin 01');
+        $resourceDentalassistentin01->addResourceGroup($resourceGroupDa);
+        $manager->persist($resourceDentalassistentin01);
+
+        $resourceDentalhygiene02 = new Resource();
+        $resourceDentalhygiene02->setName('Dentalhygiene 02');
+        $resourceDentalhygiene02->addResourceGroup($resourceGroupDh);
+        $manager->persist($resourceDentalhygiene02);
 
         $resource = new Resource();
         $resource->setName('Dentalhygiene 01');
@@ -84,6 +91,35 @@ class AppFixtures extends Fixture
         $manager->persist($dependency);
 
 
+        $shiftWork = new ShiftWork();
+        $shiftWork->setShift($shift);
+        $shiftWork->setResource($resource);
+        $shiftWork->setResourceGroup($resource->getResourceGroup()[0]);
+        $manager->persist($shiftWork);
+
+        $shiftWork = new ShiftWork();
+        $shiftWork->setShift($shift);
+        $shiftWork->setResource($resourceDentalhygiene02);
+        $shiftWork->setResourceGroup($resourceDentalhygiene02->getResourceGroup()[0]);
+        $manager->persist($shiftWork);
+        
+        
+
+        $shiftWork = new ShiftWork();
+        $shiftWork->setShift($shift);
+        $shiftWork->setResource($resourceDentalassistentin01);
+        $shiftWork->setResourceGroup($resourceDentalassistentin01->getResourceGroup()[0]);
+        $manager->persist($shiftWork);
+
+        $shiftWork = new ShiftWork();
+        $shiftWork->setShift($shift);
+        $shiftWork->setResource($resourceBehandler01);
+        $shiftWork->setResourceGroup($resourceBehandler01->getResourceGroup()[0]);
+        $manager->persist($shiftWork);
+
+
+
+        
         $manager->flush();
     }
 }

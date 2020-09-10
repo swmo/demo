@@ -27,6 +27,12 @@ class ShiftWork
      */
     private $resource;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ResourceGroup::class, inversedBy="shiftWorks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $resourceGroup;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +58,18 @@ class ShiftWork
     public function setResource(?Resource $resource): self
     {
         $this->resource = $resource;
+
+        return $this;
+    }
+
+    public function getResourceGroup(): ?ResourceGroup
+    {
+        return $this->resourceGroup;
+    }
+
+    public function setResourceGroup(?ResourceGroup $resourceGroup): self
+    {
+        $this->resourceGroup = $resourceGroup;
 
         return $this;
     }
