@@ -33,6 +33,11 @@ class ShiftWork
      */
     private $resourceGroup;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $currentPlace = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class ShiftWork
     public function setResourceGroup(?ResourceGroup $resourceGroup): self
     {
         $this->resourceGroup = $resourceGroup;
+
+        return $this;
+    }
+
+    public function getCurrentPlace(): ?array
+    {
+        return $this->currentPlace;
+    }
+
+    public function setCurrentPlace(?array $currentPlace): self
+    {
+        $this->currentPlace = $currentPlace;
 
         return $this;
     }

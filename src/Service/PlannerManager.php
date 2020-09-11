@@ -24,13 +24,9 @@ class PlannerManager
 
             $managedShifts[] = new ShiftManager($shift,$this->em->getRepository(Shift::class));
         }
-
-
         return $managedShifts;
     }
    
-
-
 }
 
 
@@ -129,8 +125,10 @@ class ShiftManager {
     }
 
     public function searchBookableRessource(){
-        
+
     }
+
+
 
 
 
