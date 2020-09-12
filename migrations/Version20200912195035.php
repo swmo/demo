@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200912193219 extends AbstractMigration
+final class Version20200912195035 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -27,12 +27,12 @@ final class Version20200912193219 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6677174FBB70BC0E ON shift_work (shift_id)');
         $this->addSql('CREATE INDEX IDX_6677174F89329D25 ON shift_work (resource_id)');
         $this->addSql('CREATE INDEX IDX_6677174F50D813EA ON shift_work (resource_group_id)');
+        $this->addSql('CREATE TABLE rule (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) DEFAULT NULL, rule VARCHAR(255) NOT NULL, priority INTEGER NOT NULL)');
         $this->addSql('CREATE TABLE dependency (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, shift_id INTEGER DEFAULT NULL, resource_group_id INTEGER DEFAULT NULL, number INTEGER NOT NULL)');
         $this->addSql('CREATE INDEX IDX_2F585505BB70BC0E ON dependency (shift_id)');
         $this->addSql('CREATE INDEX IDX_2F58550550D813EA ON dependency (resource_group_id)');
         $this->addSql('CREATE TABLE shift (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER DEFAULT NULL, start DATETIME DEFAULT NULL, "end" DATETIME DEFAULT NULL, name VARCHAR(255) DEFAULT NULL)');
         $this->addSql('CREATE INDEX IDX_A50B3B45166D1F9C ON shift (project_id)');
-        $this->addSql('CREATE TABLE block (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, start DATETIME DEFAULT NULL, "end" DATETIME DEFAULT NULL, type VARCHAR(255) DEFAULT NULL)');
         $this->addSql('CREATE TABLE project (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) DEFAULT NULL)');
         $this->addSql('CREATE TABLE project_organisation_unit (project_id INTEGER NOT NULL, organisation_unit_id INTEGER NOT NULL, PRIMARY KEY(project_id, organisation_unit_id))');
         $this->addSql('CREATE INDEX IDX_AA2C5074166D1F9C ON project_organisation_unit (project_id)');
@@ -54,9 +54,9 @@ final class Version20200912193219 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'sqlite', 'Migration can only be executed safely on \'sqlite\'.');
 
         $this->addSql('DROP TABLE shift_work');
+        $this->addSql('DROP TABLE rule');
         $this->addSql('DROP TABLE dependency');
         $this->addSql('DROP TABLE shift');
-        $this->addSql('DROP TABLE block');
         $this->addSql('DROP TABLE project');
         $this->addSql('DROP TABLE project_organisation_unit');
         $this->addSql('DROP TABLE resource_group');

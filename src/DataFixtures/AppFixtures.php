@@ -70,8 +70,6 @@ class AppFixtures extends Fixture
         $resource->addResourceGroup($resourceGroupDh);
         $manager->persist($resource);
 
-
-
         $shift = new Shift();
         $shift->setStart(new DateTime('2020-01-01 08:00'));
         $shift->setEnd(new DateTime('2020-01-01 12:00'));
@@ -103,8 +101,6 @@ class AppFixtures extends Fixture
         $shiftWork->setResourceGroup($resourceDentalhygiene02->getResourceGroup()[0]);
         $manager->persist($shiftWork);
         
-        
-
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
         $shiftWork->setResource($resourceDentalassistentin01);
@@ -117,9 +113,6 @@ class AppFixtures extends Fixture
         $shiftWork->setResourceGroup($resourceBehandler01->getResourceGroup()[0]);
         $manager->persist($shiftWork);
 
-
-
-        
         $manager->flush();
     }
 }
