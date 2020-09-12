@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RuleRepository::class)
+ * todo: maybe better name ResourceRule?
  */
 class Rule
 {

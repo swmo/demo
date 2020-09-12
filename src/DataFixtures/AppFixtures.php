@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Dependency;
+use App\Entity\OrganisationUnit;
+use App\Entity\Project;
 use App\Entity\Resource;
 use App\Entity\ResourceGroup;
 use App\Entity\Shift;
@@ -18,6 +20,13 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Studentenkurs');
+        $manager->persist($organisationUnit);
+
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Klinik');
+        $manager->persist($organisationUnit);
 
         $resourceGroupDa = new ResourceGroup();
         $resourceGroupDa->setName('Dentalassistentin');
@@ -28,7 +37,6 @@ class AppFixtures extends Fixture
         $resourceGroupDh->setName('Dentalhygienikerin');
         $resourceGroupDh->setCode('dentalhygienist');
         $manager->persist($resourceGroupDh);
-
 
         $resourceGroupD = new ResourceGroup();
         $resourceGroupD->setName('Zahnarzt');
@@ -75,6 +83,12 @@ class AppFixtures extends Fixture
         $shift->setEnd(new DateTime('2020-01-01 12:00'));
         $shift->setName('Schicht 02');
         $manager->persist($shift);
+
+        $project = new Project();
+        $project->setName('Testprojet');
+        $project->addOrganisationUnit($organisationUnit);
+        $project->addShift($shift);
+        $manager->persist($project);
 
         $dependency = new Dependency();
         $dependency->setNumber(2)
