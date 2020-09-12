@@ -45,9 +45,9 @@ class Shift
     private $shiftWorks;
 
     /**
-     * @ORM\ManyToMany(targetEntity=OrganisationUnit::class, mappedBy="shifts")
+     * @ORM\ManyToOne(targetEntity=Project::class, inversedBy="shifts")
      */
-    private $organisationUnits;
+    private $project;
 
     /**
      * EVT master?? für z.b Behandlungsstuhl
@@ -163,31 +163,16 @@ class Shift
         return $this;
     }
 
-    /**
-     * @return Collection|OrganisationUnit[]
-     */
-    public function getOrganisationUnits(): Collection
+    public function getProject(): ?Project
     {
-        return $this->organisationUnits;
+        return $this->project;
     }
 
-    public function addOrganisationUnit(OrganisationUnit $organisationUnit): self
+    public function setProject(?Project $project): self
     {
-        if (!$this->organisationUnits->contains($organisationUnit)) {
-            $this->organisationUnits[] = $organisationUnit;
-            $organisationUnit->addShift($this);
-        }
+        $this->project = $project;
 
         return $this;
     }
 
-    public function removeOrganisationUnit(OrganisationUnit $organisationUnit): self
-    {
-        if ($this->organisationUnits->contains($organisationUnit)) {
-            $this->organisationUnits->removeElement($organisationUnit);
-            $organisationUnit->removeShift($this);
-        }
-
-        return $this;
-    }
 }

@@ -30,14 +30,15 @@ class OrganisationUnit
     private $resources;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Shift::class, inversedBy="organisationUnits")
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="organisationUnits")
      */
-    private $shifts;
+    private $projects;
 
     public function __construct()
     {
         $this->resources = new ArrayCollection();
         $this->shifts = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,28 +85,31 @@ class OrganisationUnit
     }
 
     /**
-     * @return Collection|Shift[]
+     * @return Collection|Project[]
      */
-    public function getShifts(): Collection
+    public function getProjects(): Collection
     {
-        return $this->shifts;
+        return $this->projects;
     }
 
-    public function addShift(Shift $shift): self
+    public function addProject(Project $project): self
     {
-        if (!$this->shifts->contains($shift)) {
-            $this->shifts[] = $shift;
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addOrganisationUnit($this);
         }
 
         return $this;
     }
 
-    public function removeShift(Shift $shift): self
+    public function removeProject(Project $project): self
     {
-        if ($this->shifts->contains($shift)) {
-            $this->shifts->removeElement($shift);
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            $project->removeOrganisationUnit($this);
         }
 
         return $this;
     }
+
 }

@@ -34,11 +34,6 @@ class Resource
      */
     private $shiftWorks;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=OrganisationUnit::class, mappedBy="resources")
-     */
-    private $organisationUnits;
-
     public function __construct()
     {
         $this->resourceGroup = new ArrayCollection();
@@ -121,31 +116,4 @@ class Resource
         return $this;
     }
 
-    /**
-     * @return Collection|OrganisationUnit[]
-     */
-    public function getOrganisationUnits(): Collection
-    {
-        return $this->organisationUnits;
-    }
-
-    public function addOrganisationUnit(OrganisationUnit $organisationUnit): self
-    {
-        if (!$this->organisationUnits->contains($organisationUnit)) {
-            $this->organisationUnits[] = $organisationUnit;
-            $organisationUnit->addResource($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrganisationUnit(OrganisationUnit $organisationUnit): self
-    {
-        if ($this->organisationUnits->contains($organisationUnit)) {
-            $this->organisationUnits->removeElement($organisationUnit);
-            $organisationUnit->removeResource($this);
-        }
-
-        return $this;
-    }
 }
