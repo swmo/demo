@@ -35,6 +35,7 @@ class ShiftWork
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * draft, registred, accepted
      */
     private $currentPlace = [];
 
