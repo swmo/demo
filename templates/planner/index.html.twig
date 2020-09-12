@@ -42,9 +42,9 @@
     <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
 
     {% if managedShift.isWrongBooked == true %}
-        <span style="color:red">Error auf der Buchung ist eine fehlerhafte Einteilung vorhanden</span>
+        <span style="color:red">Error auf der Schicht ist eine fehlerhafte Einteilung vorhanden</span>
 
-         <h2>Fehlerhafte Buchungen</h2> <br>
+         <h2>Fehlerhafte Einteilung</h2> <br>
 
         {% for nm in managedShift.getWrongBooked() %} 
           {{nm.openNumber}} {{nm.resourceGroup.name}} 
@@ -55,7 +55,7 @@
 
     {% endif %}
 
-        <h2>notwendige Buchungen:</h2> <br>
+        <h2>notwendige Einteilung:</h2> <br>
        {% for nm in managedShift.getOpen() %} 
             {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
               {% for shiftWork in nm.shiftWorks %} 
@@ -65,7 +65,7 @@
        {% endfor %}
 
 
-        <h2>gemachte Buchungen:</h2> <br>
+        <h2>gemachte Einteilung:</h2> <br>
        {% for nm in managedShift.getBooked() %} 
             {{nm.openNumber}} {{nm.resourceGroup.name}} 
               {% for shiftWork in nm.shiftWorks %} <br>
