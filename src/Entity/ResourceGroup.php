@@ -40,7 +40,7 @@ class ResourceGroup
     private $resources;
 
     /**
-     * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="resourceGroup")
+     * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="resourceGroups")
      */
     private $shiftWorks;
 

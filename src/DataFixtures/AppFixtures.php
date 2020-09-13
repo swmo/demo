@@ -25,7 +25,23 @@ class AppFixtures extends Fixture
         $manager->persist($organisationUnit);
 
         $organisationUnit = new OrganisationUnit();
-        $organisationUnit->setName('Klinik');
+        $organisationUnit->setName('Klinik CH');
+        $manager->persist($organisationUnit);
+
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Klinik PA');
+        $manager->persist($organisationUnit);
+
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Klinik RG');
+        $manager->persist($organisationUnit);
+
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Klinik KO');
+        $manager->persist($organisationUnit);
+
+        $organisationUnit = new OrganisationUnit();
+        $organisationUnit->setName('Klinik ZE');
         $manager->persist($organisationUnit);
 
         $resourceGroupDa = new ResourceGroup();
@@ -51,6 +67,7 @@ class AppFixtures extends Fixture
         $resource = new Resource();
         $resource->setName('C350 left Stuhl');
         $resource->addResourceGroup($resourceGroupB);
+        $resource->addOrganisationUnit($organisationUnit);
         $manager->persist($resource);
 
         $resourceC350right = new Resource();

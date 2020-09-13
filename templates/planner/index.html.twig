@@ -5,6 +5,20 @@
 {% block body %}
 
 
+<h1>OUs</h1>
+
+    {% for ou in ous %}
+      <h2>{{ou.name}} </h2>
+      {% for resource in ou.resources %}
+          {{resource.name}}   ({% for resourceGroup in resource.resourceGroups %} {{resourceGroup.code}} {% endfor %} )<br>
+      {% endfor %}
+
+      {% for project in ou.projects %}
+         {{project.name}}
+      {% endfor %}
+    {% endfor %}
+
+
 <h1>Shifts</h1>
 <ul>
     {% for shift in shifts %}
@@ -24,7 +38,7 @@
 <ul>
     {% for resource in resources %}
         <li>{{ resource.name }} (
-   {% for group in resource.resourceGroup %}
+   {% for group in resource.resourceGroups %}
    {{ group.name }} 
           {% endfor %}
         )

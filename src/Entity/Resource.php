@@ -27,16 +27,22 @@ class Resource
     /**
      * @ORM\ManyToMany(targetEntity=ResourceGroup::class, inversedBy="resources")
      */
-    private $resourceGroup;
+    private $resourceGroups;
 
     /**
      * @ORM\OneToMany(targetEntity=ShiftWork::class, mappedBy="resource")
      */
     private $shiftWorks;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=OrganisationUnit::class, mappedBy="resources")
+     */
+    private $organisationUnits;
+
+
     public function __construct()
     {
-        $this->resourceGroup = new ArrayCollection();
+        $this->resourceGroups = new ArrayCollection();
         $this->shiftWorks = new ArrayCollection();
         $this->organisationUnits = new ArrayCollection();
     }
@@ -62,15 +68,15 @@ class Resource
     /**
      * @return Collection|ResourceGroup[]
      */
-    public function getResourceGroup(): Collection
+    public function getResourceGroups(): Collection
     {
-        return $this->resourceGroup;
+        return $this->resourceGroups;
     }
 
     public function addResourceGroup(ResourceGroup $resourceGroup): self
     {
-        if (!$this->resourceGroup->contains($resourceGroup)) {
-            $this->resourceGroup[] = $resourceGroup;
+        if (!$this->resourceGroups->contains($resourceGroup)) {
+            $this->resourceGroups[] = $resourceGroup;
         }
 
         return $this;
@@ -78,8 +84,8 @@ class Resource
 
     public function removeResourceGroup(ResourceGroup $resourceGroup): self
     {
-        if ($this->resourceGroup->contains($resourceGroup)) {
-            $this->resourceGroup->removeElement($resourceGroup);
+        if ($this->resourceGroups->contains($resourceGroup)) {
+            $this->resourceGroups->removeElement($resourceGroup);
         }
 
         return $this;
@@ -115,5 +121,37 @@ class Resource
 
         return $this;
     }
+
+    /**
+     * @return Collection|OrganisationUnit[]
+     */
+    public function getOrganisationUnits(): Collection
+    {
+        return $this->organisationUnits;
+    }
+
+    public function addOrganisationUnit(OrganisationUnit $organisationUnit): self
+    {
+        if (!$this->organisationUnits->contains($organisationUnit)) {
+            $this->organisationUnits[] = $organisationUnit;
+            $organisationUnit->addResource($this);
+        }
+
+        return $this;
+    }
+
+
+    public function removeOrganisationUnit(OrganisationUnit $organisationUnit): self
+    {
+        if ($this->organisationUnits->contains($organisationUnit)) {
+            $this->organisationUnits->removeElement($organisationUnit);
+            $organisationUnit->removeResource($this);
+        }
+
+        return $this;
+    }
+
+
+
 
 }
