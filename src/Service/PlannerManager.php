@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Resource;
 use App\Entity\Shift;
 use App\Repository\ShiftRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,7 @@ class PlannerManager
 
         foreach($shifts as $shift){
 
-            $managedShifts[] = new ShiftManager($shift,$this->em->getRepository(Shift::class));
+            $managedShifts[] = new ShiftManager($shift,$this->em->getRepository(Shift::class),$this->em);
         }
         return $managedShifts;
     }
@@ -35,11 +36,13 @@ class ShiftManager {
 
     protected $shift;
     protected $repo;
+    protected $em;
 
-    public function __construct(Shift $shift, ShiftRepository $repo)
+    public function __construct(Shift $shift, ShiftRepository $repo, EntityManagerInterface $em)
     {
         $this->shift = $shift;
         $this->repo = $repo;
+        $this->em = $em;
     }
 
     public function getShift(){
@@ -130,9 +133,20 @@ class ShiftManager {
     public function searchBookableRessource(){
         $opens = $this->getOpen();
 
+        $array = array();
+
+        $resourceGroups=array();
+
         foreach($opens as $open){
          //  echo $open['resourceGroup']->getCode() . ' ';
+
+            $resourceGroups[] = $open['resourceGroup'];
         }
+
+        return $this->em->getRepository(Resource::class)->findByResourceGroupAndTimeframe($resourceGroups);
+
+        //findByResourceGroupAndShiftAvaiable
+  
 
        // exit;
        // dd($open);

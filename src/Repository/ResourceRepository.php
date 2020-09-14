@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Resource;
+use App\Entity\ResourceGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,28 @@ class ResourceRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Resource::class);
+    }
+
+    public function findByResourceGroupAndTimeframe($resourceGroups,$timeframe = null){
+        $qb = $this->createQueryBuilder('resource');
+        $resourceGroupIds=array();
+        foreach($resourceGroups as $resourceGroup){
+            $resourceGroupIds[] = $resourceGroup->getId();
+        }
+
+        $qb->leftJoin('resource.resourceGroups', 'resourceGroup')
+        ;
+
+
+        $qb->andWhere(
+            $qb->expr()->in('resourceGroup.id', $resourceGroupIds)
+        );
+
+        return $qb
+        ->orderBy('resource.name', 'ASC')
+        ->getQuery()
+        ->getResult()
+        ;
     }
 
     // /**

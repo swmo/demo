@@ -85,6 +85,12 @@ class AppFixtures extends Fixture
         $resourceDentalassistentin01->addResourceGroup($resourceGroupDa);
         $manager->persist($resourceDentalassistentin01);
 
+
+        $resourceDentalassistentin02 = new Resource();
+        $resourceDentalassistentin02->setName('Dentalassistentin 02');
+        $resourceDentalassistentin02->addResourceGroup($resourceGroupDa);
+        $manager->persist($resourceDentalassistentin02);
+
         $resourceDentalhygiene02 = new Resource();
         $resourceDentalhygiene02->setName('Dentalhygiene 02');
         $resourceDentalhygiene02->addResourceGroup($resourceGroupDh);
@@ -119,16 +125,11 @@ class AppFixtures extends Fixture
         ->setShift($shift);
         $manager->persist($dependency);
 
-
         $dependency = new Dependency();
-        $dependency->setNumber(1)
+        $dependency->setNumber(3)
         ->setResourceGroup($resourceGroupDh)
         ->setShift($shift);
         $manager->persist($dependency);
-        
-
-
-
 
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
