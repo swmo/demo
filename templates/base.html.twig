@@ -123,18 +123,23 @@
            {{ encore_entry_script_tags('app') }}
             <script>
             $( function() {
-                $( ".draggable, .draggable-nonvalid" ).draggable();
+                $( ".draggable" ).draggable();
+
                 $( ".droppable" ).droppable({
-                  accept: ".draggable",
+                  accept: function(d) { 
+                    if(d.data("draggable-group") == 'valid'){ 
+                        return true;
+                    }
+                  return false;
+                  },
                   classes: {
                     "ui-droppable-active": "ui-state-active",
                     "ui-droppable-hover": "ui-state-hover"
                   },
                   drop: function( event, ui ) {
-                    $( this )
-                      .addClass( "ui-state-highlight" )
-                      .find( "p" )
-                        .html( "Dropped!" );
+            
+                     console.log("jep");
+              
                   }
                 });
             });

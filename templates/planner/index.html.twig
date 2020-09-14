@@ -74,26 +74,70 @@
       {% endif %}
 
         <h2>notwendige Einteilung:</h2> <br>
+
+            <div class="container">
+	    <div class="row">
+		    <h2 class="text-center">vorhandene zuordnungsbare Resourcen:</h2>
+	    </div>
+	    <div class="col-md-12  row-block">
+	        <ul class="list-unstyled">
        {% for nm in managedShift.getOpen() %}
 
-            {{nm.openNumber}}x {{nm.resourceGroup.name}} <br>
-            <div class="droppable ui-widget-header">
-              
-            </div>
+            
+            <li class="droppable">
+              {{nm.openNumber}}x {{nm.resourceGroup.name}} <br>
+            </li>
+
               {% for shiftWork in nm.shiftWorks %} 
-               --  {{shiftWork.resource.name}} bereits gebucht
-            {% endfor %}
-            <br>
+                <li class="mt-2">
+                    <div class="draggable" data-draggable-group="valid">
+                      <div class="media ">
+                        <div class="media-left align-self-center ml">
+                            <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/{{shiftWork.resource.id}}.jpg">
+                        </div>
+                        <div class="media-body align-self-center ml-4">
+                              {{shiftWork.resource.name}} bereits gebucht
+                        </div>
+                        <div class="media-right align-self-center">
+                            <a href="#" class="btn btn-default">Details</a>
+                        </div>
+                      </div>
+                    </div>
+                </li>
+              {% endfor %}
+              <br>
        {% endfor %}
 
-       <h2>vorhandene zuordnungsbare Resourcen:</h2>
-<div  class="ui-widget-content draggable-nonvalid">
-  <p>I'm draggable but can't be dropped</p>
-</div>
- 
-<div class=" draggable ui-widget-content">
-  <p>Drag me to my target</p>
-</div>
+
+	        </ul>
+	    </div>
+
+<section class="row-section">
+    <div class="container">
+	    <div class="row">
+		    <h2 class="text-center">vorhandene zuordnungsbare Resourcen:</h2>
+	    </div>
+	    <div class="col-md-12  row-block">
+	        <ul class="list-unstyled">
+	            <li>
+                <div class="draggable" data-draggable-group="valid">
+                  <div class="media ">
+                    <div class="media-left align-self-center ml">
+                        <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/52.jpg">
+                    </div>
+                    <div class="media-body align-self-center ml-4">
+                          Resourcename
+                    </div>
+                    <div class="media-right align-self-center">
+                        <a href="#" class="btn btn-default">Details</a>
+                    </div>
+                  </div>
+                </div>
+            </li>
+	        </ul>
+	    </div>
+</section>
+
 
         <h2>gemachte Einteilung:</h2> <br>
        {% for nm in managedShift.getBooked() %} 
