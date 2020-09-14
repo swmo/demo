@@ -89,6 +89,8 @@ class ShiftManager {
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['resourceGroup'] = $dependency->getResourceGroup();
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['openNumber'] = $dependency->getNumber();
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['dependency'] = $dependency;
+            $necessaryMap[$dependency->getResourceGroup()->getCode()]['shiftWorks'] = array();
+            $necessaryMap[$dependency->getResourceGroup()->getCode()]['shift'] = $this->shift;
         }
 
         foreach($this->shift->getShiftWorks() as $shiftWork){
@@ -96,7 +98,8 @@ class ShiftManager {
             if(!isset($necessaryMap[$shiftWork->getResourceGroup()->getCode()])){
                 $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['resourceGroup'] = $shiftWork->getResourceGroup();
                 $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['openNumber'] = 0;
-                $necessaryMap[$dependency->getResourceGroup()->getCode()]['dependency'] = null;
+                $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['dependency'] = null;
+                $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['shift'] = $this->shift;
             }
 
             $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['shiftWorks'][] = $shiftWork;
@@ -125,7 +128,14 @@ class ShiftManager {
     }
 
     public function searchBookableRessource(){
+        $opens = $this->getOpen();
 
+        foreach($opens as $open){
+         //  echo $open['resourceGroup']->getCode() . ' ';
+        }
+
+       // exit;
+       // dd($open);
     }
 
 

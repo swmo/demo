@@ -120,29 +120,44 @@ class AppFixtures extends Fixture
         $manager->persist($dependency);
 
 
-        $shiftWork = new ShiftWork();
-        $shiftWork->setShift($shift);
-        $shiftWork->setResource($resource);
-        $shiftWork->setResourceGroup($resource->getResourceGroup()[0]);
-        $manager->persist($shiftWork);
+        $dependency = new Dependency();
+        $dependency->setNumber(1)
+        ->setResourceGroup($resourceGroupDh)
+        ->setShift($shift);
+        $manager->persist($dependency);
+        
+
+
+
 
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
-        $shiftWork->setResource($resourceDentalhygiene02);
-        $shiftWork->setResourceGroup($resourceDentalhygiene02->getResourceGroup()[0]);
+        $shiftWork->setResource($resource);
+        $shiftWork->setResourceGroup($resource->getResourceGroups()[0]);
         $manager->persist($shiftWork);
+
+        /*
+        $shiftWork = new ShiftWork();
+        $shiftWork->setShift($shift);
+        $shiftWork->setResource($resourceDentalhygiene02);
+        $shiftWork->setResourceGroup($resourceDentalhygiene02->getResourceGroups()[0]);
+        $manager->persist($shiftWork);
+        */
         
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
         $shiftWork->setResource($resourceDentalassistentin01);
-        $shiftWork->setResourceGroup($resourceDentalassistentin01->getResourceGroup()[0]);
+        $shiftWork->setResourceGroup($resourceDentalassistentin01->getResourceGroups()[0]);
         $manager->persist($shiftWork);
 
+        /*
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
         $shiftWork->setResource($resourceBehandler01);
-        $shiftWork->setResourceGroup($resourceBehandler01->getResourceGroup()[0]);
+        $shiftWork->setResourceGroup($resourceBehandler01->getResourceGroups()[0]);
         $manager->persist($shiftWork);
+
+        */
 
         $manager->flush();
     }

@@ -5,7 +5,8 @@
 {% block body %}
 
 
-<h1>OUs</h1>
+
+     <h1>OUs</h1>
 
     {% for ou in ous %}
       <h2>{{ou.name}} </h2>
@@ -17,6 +18,10 @@
          {{project.name}}
       {% endfor %}
     {% endfor %}
+
+
+
+
 
 
 <h1>Shifts</h1>
@@ -49,35 +54,46 @@
     {% endfor %}
 </ul>
 
+{% for managedShift in managedShifts %}
 
+      <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
 
-    {% for managedShift in managedShifts %}
+      {{managedShift.searchBookableRessource}}
+      {% if managedShift.isWrongBooked == true %}
+          <span style="color:red">Error auf der Schicht ist eine fehlerhafte Einteilung vorhanden</span>
 
-    <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
+          <h2>Fehlerhafte Einteilung</h2> <br>
 
-    {% if managedShift.isWrongBooked == true %}
-        <span style="color:red">Error auf der Schicht ist eine fehlerhafte Einteilung vorhanden</span>
+          {% for nm in managedShift.getWrongBooked() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} 
+              {% for shiftWork in nm.shiftWorks %} <br>
+                --  {{shiftWork.resource.name}}
+              {% endfor %}
+        {% endfor %}
 
-         <h2>Fehlerhafte Einteilung</h2> <br>
-
-        {% for nm in managedShift.getWrongBooked() %} 
-          {{nm.openNumber}} {{nm.resourceGroup.name}} 
-            {% for shiftWork in nm.shiftWorks %} <br>
-               --  {{shiftWork.resource.name}}
-            {% endfor %}
-       {% endfor %}
-
-    {% endif %}
+      {% endif %}
 
         <h2>notwendige Einteilung:</h2> <br>
-       {% for nm in managedShift.getOpen() %} 
-            {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
+       {% for nm in managedShift.getOpen() %}
+
+            {{nm.openNumber}}x {{nm.resourceGroup.name}} <br>
+            <div class="droppable ui-widget-header">
+              
+            </div>
               {% for shiftWork in nm.shiftWorks %} 
                --  {{shiftWork.resource.name}} bereits gebucht
             {% endfor %}
             <br>
        {% endfor %}
 
+       <h2>vorhandene zuordnungsbare Resourcen:</h2>
+<div  class="ui-widget-content draggable-nonvalid">
+  <p>I'm draggable but can't be dropped</p>
+</div>
+ 
+<div class=" draggable ui-widget-content">
+  <p>Drag me to my target</p>
+</div>
 
         <h2>gemachte Einteilung:</h2> <br>
        {% for nm in managedShift.getBooked() %} 
@@ -101,3 +117,5 @@
 
 
 {% endblock %}
+
+
