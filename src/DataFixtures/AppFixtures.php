@@ -104,8 +104,16 @@ class AppFixtures extends Fixture
         $shift = new Shift();
         $shift->setStart(new DateTime('2020-01-01 08:00'));
         $shift->setEnd(new DateTime('2020-01-01 12:00'));
-        $shift->setName('Schicht 02');
+        $shift->setName('Schicht 01');
         $manager->persist($shift);
+
+
+
+        $shift2 = new Shift();
+        $shift2->setStart(new DateTime('2020-01-01 08:00'));
+        $shift2->setEnd(new DateTime('2020-01-01 12:00'));
+        $shift2->setName('Schicht 01');
+        $manager->persist($shift2);
 
         $project = new Project();
         $project->setName('Testprojet');
@@ -136,6 +144,13 @@ class AppFixtures extends Fixture
         $dependency->setNumber(1)
         ->setResourceGroup($resourceGroupB)
         ->setShift($shift);
+        $manager->persist($dependency);
+
+
+        $dependency = new Dependency();
+        $dependency->setNumber(1)
+        ->setResourceGroup($resourceGroupB)
+        ->setShift($shift2);
         $manager->persist($dependency);
 
         $shiftWork = new ShiftWork();

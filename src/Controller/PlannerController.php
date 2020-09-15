@@ -52,4 +52,23 @@ class PlannerController extends AbstractController
 
     }
 
+    /**
+     * @Route("/shift/{shift}}", name="shift")
+     */
+    public function shift(EntityManagerInterface $em, PlannerManager $plannerManager)
+    {
+  
+        $managedShifts[] = $plannerManager->getManagedShiftsByShift($shift);
+
+        $resources = $em->getRepository(Resource::class)->findAll();
+        return $this->render('planner/index.html.twig', [
+            'managedShifts' => $managedShifts
+        ]);
+
+
+    }
+
+
+    
+
 }

@@ -3,7 +3,120 @@
 {% block title %}Hello PlannerController!{% endblock %}
 
 {% block body %}
-    <h1>OUs</h1>
+ 
+
+
+{% for managedShift in managedShifts %}
+
+      <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
+
+      {% if managedShift.isWrongBooked == true %}
+          <span style="color:red">Error auf der Schicht ist eine fehlerhafte Einteilung vorhanden</span>
+
+          <h2>Fehlerhafte Einteilung</h2> <br>
+
+          {% for nm in managedShift.getWrongBooked() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} 
+              {% for shiftWork in nm.shiftWorks %} <br>
+                --  {{shiftWork.resource.name}}
+              {% endfor %}
+        {% endfor %}
+
+      {% endif %}
+
+ <div class="container">
+  <div class="row">
+
+    <div class="col-sm">
+      	        <ul class="list-unstyled">
+       {% for nm in managedShift.getAll() %}
+
+            <p class="font-weight-bold">{{nm.resourceGroup.name}} </p>
+
+             {% if nm.openNumber > 0 %}
+            <li class="droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
+              {{nm.openNumber}}x <br>
+            </li>
+            {% else %}
+              OK
+            {% endif %}
+
+
+              {% for shiftWork in nm.shiftWorks %} 
+                <li class="mt-2">
+                    <div>
+                      <div class="media ">
+                        <div class="media-left align-self-center ml">
+                            <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/{{shiftWork.resource.id}}.jpg">
+                        </div>
+                        <div class="media-body align-self-center ml-4">
+                              {{shiftWork.resource.name}} bereits gebucht
+                        </div>
+                        <div class="media-right align-self-center">
+                            <a href="#" class="btn btn-default">Details</a>
+                        </div>
+                      </div>
+                    </div>
+                </li>
+              {% endfor %}
+              <br>
+       {% endfor %}
+
+
+	        </ul>
+    </div>
+    <div class="col-sm">
+         <h2 class="text-center">vorhandene zuordnungsbare Resourcen:</h2>
+
+	        <ul class="list-unstyled">
+
+          {% for resourcesBookable in managedShift.searchBookableRessource %} 
+	            <li class="mt-2">
+                <div class="draggable" data-draggable-resource-resourcegroups="{% for resourceGroup in resourcesBookable.getResourceGroups() %}{{resourceGroup.id}} {% endfor %}" data-draggable-resourceid="{{resourcesBookable.id}}">
+                  <div class="media ">
+                    <div class="media-left align-self-center ml">
+                        <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/{{resourcesBookable.id}}.jpg">
+                    </div>
+                    <div class="media-body align-self-center ml-4">
+                          {{resourcesBookable.name}}
+                    </div>
+                    <div class="media-right align-self-center">
+                        <a href="#" class="btn btn-default">Details</a>
+                    </div>
+                  </div>
+                </div>
+            </li>
+          {% endfor %}
+
+	        </ul>
+    </div>
+  </div>
+</div>
+
+
+
+	    
+
+
+      <h2>gemachte Einteilung:</h2> <br>
+      {% for nm in managedShift.getBooked() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} 
+              {% for shiftWork in nm.shiftWorks %} <br>
+               --  {{shiftWork.resource.name}} <br>
+            {% endfor %}
+      {% endfor %}
+
+      <h2>Abgeschlossene Abhängikeiten:</h2> <br>
+      {% for nm in managedShift.getSuccessfullDepenendcies() %} 
+            {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
+              {% for shiftWork in nm.shiftWorks %} 
+               --  {{shiftWork.resource.name}} <br>
+            {% endfor %}
+      {% endfor %}
+    {% endfor %}
+
+
+   <h1>OUs</h1>
 
     {% for ou in ous %}
       <h2>{{ou.name}} </h2>
@@ -43,107 +156,7 @@
     {% endfor %}
 </ul>
 
-{% for managedShift in managedShifts %}
 
-      <h1>{{ managedShift.getShift().name }} {{ managedShift.getShift().start|date("d.m.Y h:i") }} - {{ managedShift.getShift().end|date("d.m.Y h:i") }} </h1>
-
-      {% if managedShift.isWrongBooked == true %}
-          <span style="color:red">Error auf der Schicht ist eine fehlerhafte Einteilung vorhanden</span>
-
-          <h2>Fehlerhafte Einteilung</h2> <br>
-
-          {% for nm in managedShift.getWrongBooked() %} 
-            {{nm.openNumber}} {{nm.resourceGroup.name}} 
-              {% for shiftWork in nm.shiftWorks %} <br>
-                --  {{shiftWork.resource.name}}
-              {% endfor %}
-        {% endfor %}
-
-      {% endif %}
-
-
-            <div class="container">
-	    <div class="row">
-		    <h2 class="text-center">notwendige Einteilung:</h2>
-	    </div>
-	    <div class="col-md-12  row-block">
-	        <ul class="list-unstyled">
-       {% for nm in managedShift.getOpen() %}
-
-            
-            <li class="droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
-              {{nm.openNumber}}x {{nm.resourceGroup.name}} <br>
-            </li>
-
-              {% for shiftWork in nm.shiftWorks %} 
-                <li class="mt-2">
-                    <div>
-                      <div class="media ">
-                        <div class="media-left align-self-center ml">
-                            <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/{{shiftWork.resource.id}}.jpg">
-                        </div>
-                        <div class="media-body align-self-center ml-4">
-                              {{shiftWork.resource.name}} bereits gebucht
-                        </div>
-                        <div class="media-right align-self-center">
-                            <a href="#" class="btn btn-default">Details</a>
-                        </div>
-                      </div>
-                    </div>
-                </li>
-              {% endfor %}
-              <br>
-       {% endfor %}
-
-
-	        </ul>
-	    </div>
-
-<section class="row-section">
-    <div class="container">
-	    <div class="row">
-		    <h2 class="text-center">vorhandene zuordnungsbare Resourcen:</h2>
-	    </div>
-	    <div class="col-md-12  row-block">
-	        <ul class="list-unstyled">
-
-          {% for resourcesBookable in managedShift.searchBookableRessource %} 
-	            <li class="mt-2">
-                <div class="draggable" data-draggable-resource-resourcegroups="{% for resourceGroup in resourcesBookable.getResourceGroups() %}{{resourceGroup.id}} {% endfor %}" data-draggable-resourceid="{{resourcesBookable.id}}">
-                  <div class="media ">
-                    <div class="media-left align-self-center ml">
-                        <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/{{resourcesBookable.id}}.jpg">
-                    </div>
-                    <div class="media-body align-self-center ml-4">
-                          {{resourcesBookable.name}}
-                    </div>
-                    <div class="media-right align-self-center">
-                        <a href="#" class="btn btn-default">Details</a>
-                    </div>
-                  </div>
-                </div>
-            </li>
-          {% endfor %}
-
-	        </ul>
-	    </div>
-</section>
-      <h2>gemachte Einteilung:</h2> <br>
-      {% for nm in managedShift.getBooked() %} 
-            {{nm.openNumber}} {{nm.resourceGroup.name}} 
-              {% for shiftWork in nm.shiftWorks %} <br>
-               --  {{shiftWork.resource.name}} <br>
-            {% endfor %}
-      {% endfor %}
-
-      <h2>Abgeschlossene Abhängikeiten:</h2> <br>
-      {% for nm in managedShift.getSuccessfullDepenendcies() %} 
-            {{nm.openNumber}} {{nm.resourceGroup.name}} <br>
-              {% for shiftWork in nm.shiftWorks %} 
-               --  {{shiftWork.resource.name}} <br>
-            {% endfor %}
-      {% endfor %}
-    {% endfor %}
 {% endblock %}
 
 

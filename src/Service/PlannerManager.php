@@ -27,6 +27,10 @@ class PlannerManager
         }
         return $managedShifts;
     }
+
+    public function getManagedShiftsByShift($shift){
+        return new ShiftManager($shift,$this->em->getRepository(Shift::class),$this->em);
+    }
    
 }
 
@@ -68,6 +72,10 @@ class ShiftManager {
             }
         }
         return $array;
+    }
+
+    public function getAll(){
+        return $this->getMap();
     }
 
 
@@ -147,7 +155,7 @@ class ShiftManager {
             return array();
         }
 
-        return $this->em->getRepository(Resource::class)->findByResourceGroupAndTimeframe($resourceGroups);
+        return $this->em->getRepository(Resource::class)->findByResourceGroupAndAvailableForShift($resourceGroups,$this->getShift());
 
         //findByResourceGroupAndShiftAvaiable
   
@@ -155,10 +163,6 @@ class ShiftManager {
        // exit;
        // dd($open);
     }
-
-
-
-
 
 
 }

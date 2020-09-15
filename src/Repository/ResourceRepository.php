@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Resource;
 use App\Entity\ResourceGroup;
+use App\Entity\Shift;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,7 +21,7 @@ class ResourceRepository extends ServiceEntityRepository
         parent::__construct($registry, Resource::class);
     }
 
-    public function findByResourceGroupAndTimeframe($resourceGroups,$timeframe = null){
+    public function findByResourceGroupAndAvailableForShift($resourceGroups,Shift $shift = null){
         $qb = $this->createQueryBuilder('resource');
         $resourceGroupIds=array();
         foreach($resourceGroups as $resourceGroup){
@@ -30,10 +31,34 @@ class ResourceRepository extends ServiceEntityRepository
         $qb->leftJoin('resource.resourceGroups', 'resourceGroup')
         ;
 
+        $qb->leftJoin('resource.shiftWorks', 'shiftWork')
+        ;
+        $qb->leftJoin('shiftWork.shift', 'shift')
+        ;
+
+    
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->isNull('shift.end'),
+                $qb->expr()->gt('shift.end', ':end')   
+            )
+        )->setParameter('end', $shift->getEnd());
+
+            /*
+        $qb
+            ->andWhere(
+                $qb->expr()->lte('shift.start', ':start'))
+                ->setParameter('start', $shift->getStart());
+            */
 
         $qb->andWhere(
             $qb->expr()->in('resourceGroup.id', $resourceGroupIds)
         );
+
+         
+
+        
+
 
         return $qb
         ->orderBy('resource.name', 'ASC')
