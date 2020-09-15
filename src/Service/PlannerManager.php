@@ -143,6 +143,10 @@ class ShiftManager {
             $resourceGroups[] = $open['resourceGroup'];
         }
 
+        if(count($resourceGroups) == 0){
+            return array();
+        }
+
         return $this->em->getRepository(Resource::class)->findByResourceGroupAndTimeframe($resourceGroups);
 
         //findByResourceGroupAndShiftAvaiable

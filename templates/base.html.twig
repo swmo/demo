@@ -127,7 +127,13 @@
 
                 $( ".droppable" ).droppable({
                   accept: function(d) { 
-                    if(d.data("draggable-group") == 'valid'){ 
+                    droppableElement = $(this);
+                    possibleResourceGroupsOfTheDraggedElement = d.data("draggable-resource-resourcegroups").split(' ').map(Number);
+                    resourceGroupOfDroppableElement = droppableElement.data("droppable-resourcegroupid");
+               
+                    if(possibleResourceGroupsOfTheDraggedElement.includes(resourceGroupOfDroppableElement)){ 
+                           console.log(possibleResourceGroupsOfTheDraggedElement);
+                     console.log(resourceGroupOfDroppableElement);
                         return true;
                     }
                   return false;
@@ -137,8 +143,11 @@
                     "ui-droppable-hover": "ui-state-hover"
                   },
                   drop: function( event, ui ) {
-            
-                     console.log("jep");
+                    ui.draggable.hide();
+                    target = $(event.target);
+                    source = ui.draggable;
+
+                    window.location.href = "/shiftwork/add/"+target.data("droppable-shift")+"/"+source.data("draggable-resourceid")+"/"+target.data("droppable-resourcegroupid");
               
                   }
                 });

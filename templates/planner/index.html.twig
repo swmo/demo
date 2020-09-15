@@ -71,13 +71,13 @@
        {% for nm in managedShift.getOpen() %}
 
             
-            <li class="droppable">
+            <li class="droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
               {{nm.openNumber}}x {{nm.resourceGroup.name}} <br>
             </li>
 
               {% for shiftWork in nm.shiftWorks %} 
                 <li class="mt-2">
-                    <div class="draggable" data-draggable-group="valid">
+                    <div>
                       <div class="media ">
                         <div class="media-left align-self-center ml">
                             <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/{{shiftWork.resource.id}}.jpg">
@@ -109,7 +109,7 @@
 
           {% for resourcesBookable in managedShift.searchBookableRessource %} 
 	            <li class="mt-2">
-                <div class="draggable" data-draggable-group="valid">
+                <div class="draggable" data-draggable-resource-resourcegroups="{% for resourceGroup in resourcesBookable.getResourceGroups() %}{{resourceGroup.id}} {% endfor %}" data-draggable-resourceid="{{resourcesBookable.id}}">
                   <div class="media ">
                     <div class="media-left align-self-center ml">
                         <img class="rounded-circle" src="https://randomuser.me/api/portraits/women/{{resourcesBookable.id}}.jpg">

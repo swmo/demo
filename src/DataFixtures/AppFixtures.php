@@ -131,6 +131,13 @@ class AppFixtures extends Fixture
         ->setShift($shift);
         $manager->persist($dependency);
 
+
+        $dependency = new Dependency();
+        $dependency->setNumber(1)
+        ->setResourceGroup($resourceGroupB)
+        ->setShift($shift);
+        $manager->persist($dependency);
+
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
         $shiftWork->setResource($resource);

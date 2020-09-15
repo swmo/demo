@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\OrganisationUnit;
 use App\Entity\Resource;
+use App\Entity\ResourceGroup;
 use App\Entity\Shift;
+use App\Entity\ShiftWork;
 use App\Service\PlannerManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,4 +35,21 @@ class PlannerController extends AbstractController
 
 
     }
+
+    /**
+     * @Route("/shiftwork/add/{shift}/{resource}/{resourceGroup}", name="shiftwork_add")
+     */
+    public function shiftworkAdd(Shift $shift, Resource $resource, ResourceGroup $resourceGroup, EntityManagerInterface $em){
+
+        $newShiftWork = new ShiftWork();
+        $newShiftWork->setShift($shift);
+        $newShiftWork->setResource($resource);
+        $newShiftWork->setResourceGroup($resourceGroup);
+        $em->persist($newShiftWork);
+        $em->flush();
+        
+        return $this->redirectToRoute('planner');
+
+    }
+
 }
