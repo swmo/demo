@@ -44,6 +44,10 @@ class AppFixtures extends Fixture
         $organisationUnit->setName('Klinik ZE');
         $manager->persist($organisationUnit);
 
+
+
+
+
         $resourceGroupDa = new ResourceGroup();
         $resourceGroupDa->setName('Dentalassistentin');
         $resourceGroupDa->setCode('dentalassistant');
@@ -107,19 +111,26 @@ class AppFixtures extends Fixture
         $shift->setName('Schicht 01');
         $manager->persist($shift);
 
-
-
         $shift2 = new Shift();
         $shift2->setStart(new DateTime('2020-01-01 08:00'));
         $shift2->setEnd(new DateTime('2020-01-01 12:00'));
         $shift2->setName('Schicht 01');
         $manager->persist($shift2);
 
-        $project = new Project();
-        $project->setName('Testprojet');
-        $project->addOrganisationUnit($organisationUnit);
-        $project->addShift($shift);
-        $manager->persist($project);
+        $project01 = new Project();
+        $project01
+            ->setName('Testprojekt 01')
+            ->addOrganisationUnit($organisationUnit)
+            ->addShift($shift);
+        $manager->persist($project01);
+
+
+        $project02 = new Project();
+        $project02
+            ->setName('Testprojekt 02')
+            ->addOrganisationUnit($organisationUnit)
+            ->addShift($shift2);
+        $manager->persist($project02);
 
         $dependency = new Dependency();
         $dependency->setNumber(2)
@@ -181,6 +192,9 @@ class AppFixtures extends Fixture
         $manager->persist($shiftWork);
 
         */
+
+
+
 
         $manager->flush();
     }

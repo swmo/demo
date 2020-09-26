@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projects{% endblock %}
+
+{% block body %}
+
+List of Projects
+
+
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for project in projects %}
+    <tr>
+      <th scope="row"><a href="{{path('project_calendar',{'project': project.id})}}" class="stretched-link">1{{project.id}}</a></th>
+      <td>{{project.name}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -31,34 +31,40 @@
       	        <ul class="list-unstyled">
        {% for nm in managedShift.getAll() %}
 
-            <p class="font-weight-bold">{{nm.resourceGroup.name}} </p>
+           
+            <p class="font-weight-bold">{{nm.resourceGroup.name}}  {% if nm.openNumber == 0 %} -> OK  {% endif %}</p>
 
-             {% if nm.openNumber > 0 %}
-            <li class="droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
-              {{nm.openNumber}}x <br>
-            </li>
-            {% else %}
-              OK
+      
+
+              <div class="row">
+
+              {% if nm.openNumber > 0 %}
+          
+                <div class="col-sm droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
+                  {{nm.openNumber}}x 
+                </div>
+      
+           
             {% endif %}
-
-
               {% for shiftWork in nm.shiftWorks %} 
-                <li class="mt-2">
-                    <div>
-                      <div class="media ">
-                        <div class="media-left align-self-center ml">
-                            <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/{{shiftWork.resource.id}}.jpg">
-                        </div>
-                        <div class="media-body align-self-center ml-4">
-                              {{shiftWork.resource.name}} bereits gebucht
-                        </div>
-                        <div class="media-right align-self-center">
-                            <a href="#" class="btn btn-default">Details</a>
-                        </div>
-                      </div>
+
+          
+
+              <div class="col-sm">
+        
+                 <div>
+                  <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/{{shiftWork.resource.id}}.jpg">
+                  <a href="{{ path('shiftwork_remove', {id: shiftWork.id}) }}">delete</a>
                     </div>
-                </li>
+                    <div>    
+                        
+                              {{shiftWork.resource.name}}
+                              </div>
+                        
+                
+              </div>
               {% endfor %}
+              </div>
               <br>
        {% endfor %}
 
@@ -76,12 +82,9 @@
                   <div class="media ">
                     <div class="media-left align-self-center ml">
                         <img class="rounded-circle" src="https://randomuser.me/api/portraits/men/{{resourcesBookable.id}}.jpg">
-                    </div>
-                    <div class="media-body align-self-center ml-4">
+                        <div>
                           {{resourcesBookable.name}}
-                    </div>
-                    <div class="media-right align-self-center">
-                        <a href="#" class="btn btn-default">Details</a>
+                          </div>
                     </div>
                   </div>
                 </div>

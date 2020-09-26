@@ -6,3 +6,7 @@ body {
     min-height: 60px;
     background-color:lightgray;
 }
+
+#calendar{
+    height:100%;
+}
