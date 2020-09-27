@@ -19,19 +19,11 @@ import $ from 'jquery';
 global.$ = global.jQuery = $;
 import '../css/app.scss'
 
-
-
 import { Calendar } from '@fullcalendar/core';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-
-
-  let slotMinTimeHour = 6;
-  let slotMaxTimeHour = 18;
-
+const projectCalendar = function (calendarEl,urlResources, urlEvents, slotMinTimeHour = 6,slotMaxTimeHour = 18) {
   var calendar = new Calendar(calendarEl, {
     now: '2020-09-07',
     plugins: [ resourceTimelinePlugin ],
@@ -51,15 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
         type: 'resourceTimeline',
         duration: { days: 7 },
         buttonText: '7 days',
-         slotDuration: (slotMaxTimeHour-slotMinTimeHour)+':00',
+          slotDuration: (slotMaxTimeHour-slotMinTimeHour)+':00',
           resourceAreaWidth: '10%'
       }
     },
-    resources: [
-      { id: 'a', title: 'Schicht C350 left', status: 'OK' },
-      { id: 'b', title: 'Schicht C350 rechts' , eventColor: 'green' },
-      { id: 'c', title: 'Studentenkurs 01', eventColor: 'red' },
-    ],
+    resources: urlResources,
     events: [
       { id: '1', resourceId: 'a', start: '2020-09-07T07:00:00', end: '2020-09-07T12:00:00', title: 'Schicht 01', resources: [1,2,3,4,5] },
       { id: '1', resourceId: 'a', start: '2020-09-07T12:00:00', end: '2020-09-07T17:00:00', title: 'Schicht 02', resources: [7,5] },
@@ -71,22 +59,19 @@ document.addEventListener('DOMContentLoaded', function() {
     eventContent: function(arg) {
       let htmlResources = ""
       if(arg.event.extendedProps.resources){
-         htmlResources = arg.event.extendedProps.resources.map(function(resource){
-           return '<div> Name <img class="rounded-circle" style="max-width:100%;"src="https://randomuser.me/api/portraits/men/'+resource+'.jpg">'+resource+' </div>';
-         }).join();
+          htmlResources = arg.event.extendedProps.resources.map(function(resource){
+            return '<div> Name <img class="rounded-circle" style="max-width:100%;"src="https://randomuser.me/api/portraits/men/'+resource+'.jpg">'+resource+' </div>';
+          }).join();
       }
 
-    
-     
       return { html: htmlResources }
     },
     eventDidMount: function(){
       setTimeout(function(){ calendar.setOption('aspectRatio', 1.8);}, 100);
     }
-  });
+    });
+  return calendar;
+}
 
-  calendar.render();
-});
-
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+global.projectCalendar = projectCalendar;
 

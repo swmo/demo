@@ -74,40 +74,44 @@
   </div>
 </div>
 
-        {% block javascripts %}
-           {{ encore_entry_script_tags('app') }}
-            <script>
-            $( function() {
-                $( ".draggable" ).draggable();
+  {% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script>
+    $( function() {
+        $( ".draggable" ).draggable();
+        $( ".droppable" ).droppable({
+          accept: function(d) { 
+            droppableElement = $(this);
+            possibleResourceGroupsOfTheDraggedElement = d.data("draggable-resource-resourcegroups").split(' ').map(Number);
+            resourceGroupOfDroppableElement = droppableElement.data("droppable-resourcegroupid");
+            if(possibleResourceGroupsOfTheDraggedElement.includes(resourceGroupOfDroppableElement)){ 
+                console.log(possibleResourceGroupsOfTheDraggedElement);
+                console.log(resourceGroupOfDroppableElement);
+                return true;
+            }
+          return false;
+          },
+          classes: {
+            "ui-droppable-active": "ui-state-active",
+            "ui-droppable-hover": "ui-state-hover"
+          },
+          drop: function( event, ui ) {
+            ui.draggable.hide();
+            target = $(event.target);
+            source = ui.draggable;
 
-                $( ".droppable" ).droppable({
-                  accept: function(d) { 
-                    droppableElement = $(this);
-                    possibleResourceGroupsOfTheDraggedElement = d.data("draggable-resource-resourcegroups").split(' ').map(Number);
-                    resourceGroupOfDroppableElement = droppableElement.data("droppable-resourcegroupid");
-               
-                    if(possibleResourceGroupsOfTheDraggedElement.includes(resourceGroupOfDroppableElement)){ 
-                           console.log(possibleResourceGroupsOfTheDraggedElement);
-                     console.log(resourceGroupOfDroppableElement);
-                        return true;
-                    }
-                  return false;
-                  },
-                  classes: {
-                    "ui-droppable-active": "ui-state-active",
-                    "ui-droppable-hover": "ui-state-hover"
-                  },
-                  drop: function( event, ui ) {
-                    ui.draggable.hide();
-                    target = $(event.target);
-                    source = ui.draggable;
+            window.location.href = "/shiftwork/add/"+target.data("droppable-shift")+"/"+source.data("draggable-resourceid")+"/"+target.data("droppable-resourcegroupid");
+      
+          }
+        });
+    });
 
-                    window.location.href = "/shiftwork/add/"+target.data("droppable-shift")+"/"+source.data("draggable-resourceid")+"/"+target.data("droppable-resourcegroupid");
-              
-                  }
-                });
-            });
-            </script>
-        {% endblock %}
+    document.addEventListener('DOMContentLoaded', function() {
+      calendar = projectCalendar(document.getElementById('calendar'),'{{path("fullcalendar_project_resources")}}','{{path("fullcalendar_project_events")}}');
+      calendar.render();
+    });
+
+    </script>
+  {% endblock %}
     </body>
 </html>
