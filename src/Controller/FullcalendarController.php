@@ -41,6 +41,7 @@ class FullcalendarController extends AbstractController
      */
     public function fullcalendar_project_events(Project $project, PlannerManager $plannerManager){
       
+        // todo: instead use  $project->getProjectResources()
         $projectShifts = $project->getShifts();
 
         $jsonArray = [];
