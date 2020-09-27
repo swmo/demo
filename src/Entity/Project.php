@@ -34,10 +34,16 @@ class Project
      */
     private $shifts;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Resource::class, inversedBy="projects")
+     */
+    private $projectResources;
+
     public function __construct()
     {
         $this->organisationUnits = new ArrayCollection();
         $this->shifts = new ArrayCollection();
+        $this->projectResources = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +115,32 @@ class Project
             if ($shift->getProject() === $this) {
                 $shift->setProject(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Resource[]
+     */
+    public function getProjectResources(): Collection
+    {
+        return $this->projectResources;
+    }
+
+    public function addProjectResource(Resource $projectResource): self
+    {
+        if (!$this->projectResources->contains($projectResource)) {
+            $this->projectResources[] = $projectResource;
+        }
+
+        return $this;
+    }
+
+    public function removeProjectResource(Resource $projectResource): self
+    {
+        if ($this->projectResources->contains($projectResource)) {
+            $this->projectResources->removeElement($projectResource);
         }
 
         return $this;

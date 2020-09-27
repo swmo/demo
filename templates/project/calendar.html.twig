@@ -3,8 +3,15 @@
 {% block title %}Project Calendar{% endblock %}
 
 {% block body %}
+    <div id="calendar"></div>
+{% endblock %}
 
-
-<div id="calendar"></div>
-
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            calendar = projectCalendar(document.getElementById('calendar'),'{{path("fullcalendar_project_resources",{project: project.id})}}','{{path("fullcalendar_project_events",{project: project.id})}}');
+            calendar.render();
+        });
+    </script>
 {% endblock %}

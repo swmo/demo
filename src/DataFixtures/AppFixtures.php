@@ -68,11 +68,11 @@ class AppFixtures extends Fixture
         $resourceGroupB->setCode('treatmentchair');
         $manager->persist($resourceGroupB);
 
-        $resource = new Resource();
-        $resource->setName('C350 left Stuhl');
-        $resource->addResourceGroup($resourceGroupB);
-        $resource->addOrganisationUnit($organisationUnit);
-        $manager->persist($resource);
+        $resourceC350left = new Resource();
+        $resourceC350left->setName('C350 left Stuhl');
+        $resourceC350left->addResourceGroup($resourceGroupB);
+        $resourceC350left->addOrganisationUnit($organisationUnit);
+        $manager->persist($resourceC350left);
 
         $resourceC350right = new Resource();
         $resourceC350right->setName('C350 right Stuhl');
@@ -100,10 +100,10 @@ class AppFixtures extends Fixture
         $resourceDentalhygiene02->addResourceGroup($resourceGroupDh);
         $manager->persist($resourceDentalhygiene02);
 
-        $resource = new Resource();
-        $resource->setName('Dentalhygiene 01');
-        $resource->addResourceGroup($resourceGroupDh);
-        $manager->persist($resource);
+        $resourceDentalhygiene01 = new Resource();
+        $resourceDentalhygiene01->setName('Dentalhygiene 01');
+        $resourceDentalhygiene01->addResourceGroup($resourceGroupDh);
+        $manager->persist($resourceDentalhygiene01);
 
         $shift = new Shift();
         $shift->setStart(new DateTime('2020-01-01 08:00'));
@@ -121,7 +121,9 @@ class AppFixtures extends Fixture
         $project01
             ->setName('Testprojekt 01')
             ->addOrganisationUnit($organisationUnit)
-            ->addShift($shift);
+            ->addShift($shift)
+            ->addProjectResource($resourceC350right)
+            ->addProjectResource($resourceC350left);
         $manager->persist($project01);
 
 
@@ -166,8 +168,8 @@ class AppFixtures extends Fixture
 
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
-        $shiftWork->setResource($resource);
-        $shiftWork->setResourceGroup($resource->getResourceGroups()[0]);
+        $shiftWork->setResource($resourceDentalhygiene01);
+        $shiftWork->setResourceGroup($resourceDentalhygiene01->getResourceGroups()[0]);
         $manager->persist($shiftWork);
 
         /*
@@ -180,8 +182,8 @@ class AppFixtures extends Fixture
         
         $shiftWork = new ShiftWork();
         $shiftWork->setShift($shift);
-        $shiftWork->setResource($resourceDentalassistentin01);
-        $shiftWork->setResourceGroup($resourceDentalassistentin01->getResourceGroups()[0]);
+        $shiftWork->setResource($resourceC350right);
+        $shiftWork->setResourceGroup($resourceC350right->getResourceGroups()[0]);
         $manager->persist($shiftWork);
 
         /*

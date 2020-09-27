@@ -48,14 +48,8 @@ const projectCalendar = function (calendarEl,urlResources, urlEvents, slotMinTim
       }
     },
     resources: urlResources,
-    events: [
-      { id: '1', resourceId: 'a', start: '2020-09-07T07:00:00', end: '2020-09-07T12:00:00', title: 'Schicht 01', resources: [1,2,3,4,5] },
-      { id: '1', resourceId: 'a', start: '2020-09-07T12:00:00', end: '2020-09-07T17:00:00', title: 'Schicht 02', resources: [7,5] },
-      { id: '2', resourceId: 'c', start: '2020-09-07T05:00:00', end: '2020-09-07T22:00:00', title: 'event 2' },
-      { id: '3', resourceId: 'd', start: '2020-09-06', end: '2020-09-08', title: 'event 3' },
-      { id: '4', resourceId: 'e', start: '2020-09-07T03:00:00', end: '2020-09-07T08:00:00', title: 'event 4' },
-      { id: '5', resourceId: 'f', start: '2020-09-07T00:30:00', end: '2020-09-07T02:30:00', title: 'event 5' }
-    ],
+    events: urlEvents,
+    
     eventContent: function(arg) {
       let htmlResources = ""
       if(arg.event.extendedProps.resources){

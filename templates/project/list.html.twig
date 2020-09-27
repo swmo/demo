@@ -6,8 +6,6 @@
 
 List of Projects
 
-
-
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
@@ -16,10 +14,9 @@ List of Projects
     </tr>
   </thead>
   <tbody>
-
     {% for project in projects %}
     <tr>
-      <th scope="row"><a href="{{path('project_calendar',{'project': project.id})}}" class="stretched-link">1{{project.id}}</a></th>
+      <td scope="col"><a href="{{path('project_calendar',{'project': project.id})}}" class="">{{project.id}}</a></td>
       <td>{{project.name}}</td>
     </tr>
     {% endfor %}

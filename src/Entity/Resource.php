@@ -39,12 +39,18 @@ class Resource
      */
     private $organisationUnits;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="projectResources")
+     */
+    private $projects;
+
 
     public function __construct()
     {
         $this->resourceGroups = new ArrayCollection();
         $this->shiftWorks = new ArrayCollection();
         $this->organisationUnits = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
 
@@ -146,6 +152,34 @@ class Resource
         if ($this->organisationUnits->contains($organisationUnit)) {
             $this->organisationUnits->removeElement($organisationUnit);
             $organisationUnit->removeResource($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addProjectResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            $project->removeProjectResource($this);
         }
 
         return $this;
