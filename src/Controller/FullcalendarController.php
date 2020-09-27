@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Service\PlannerManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +39,7 @@ class FullcalendarController extends AbstractController
     /**
      * @Route("/fullcalendar/project/events/{project}", name="fullcalendar_project_events")
      */
-    public function fullcalendar_project_events(Project $project, ProjectRepository $projectRepository){
+    public function fullcalendar_project_events(Project $project, PlannerManager $plannerManager){
       
         $projectShifts = $project->getShifts();
 
@@ -47,16 +48,60 @@ class FullcalendarController extends AbstractController
         foreach($projectShifts as $projectShift){
             $jsonEvent['id'] = $projectShift->getId();
             $jsonEvent['title'] = $projectShift->getName();
-            $jsonEvent['start'] = '2020-09-07T07:00:00';
-            $jsonEvent['end'] = '2020-09-07T12:00:00';
-            $jsonEvent['resources'] = [1,2,3,4,5];
+            $jsonEvent['start'] = $projectShift->getStart()->format('Y-m-d H:i');
+            $jsonEvent['end'] = $projectShift->getEnd()->format('Y-m-d H:i');
             $resourceIds = [];
             foreach($projectShift->getShiftWorks() as $shiftWork){
                 $resourceIds[] = $shiftWork->getResource()->getId();
             }
             $jsonEvent['resourceIds'] = $resourceIds;
-            $jsonArray[] = $jsonEvent;
+           
            // $jsonArray[]['resourceIds'] = $projectShift-;
+
+           $managedShift = $plannerManager->getManagedShiftsByShift($projectShift);
+
+           $bookedResources=[];
+           $managedShiftWorks=[];
+
+           foreach($managedShift->getAll() as $msw){
+                $managedShiftWork = [];
+               foreach($msw['shiftWorks'] as $shiftWork){
+                    $bookedResources[] = $shiftWork->getResource()->getId();
+                    $shiftWorkArray['resource']['id'] = $shiftWork->getResource()->getId();
+                    $shiftWorkArray['resource']['name'] = $shiftWork->getResource()->getName();
+                    $managedShiftWork['shiftWorks'][] = $shiftWorkArray;     
+               }
+            
+               $managedShiftWork['openNumber'] = $msw['openNumber'];
+               $managedShiftWork['shift']['id'] = $msw['shift']->getId();
+               $managedShiftWork['resourceGroup']['id'] = $msw['resourceGroup']->getId();
+               $managedShiftWork['resourceGroup']['name'] = $msw['resourceGroup']->getName();
+
+            
+
+               $managedShiftWorks[] = $managedShiftWork;
+
+           }
+
+           $bookableResources = [];
+           foreach($managedShift->searchBookableRessource() as $bookableResource){
+                $resource  = [];
+                $resource['id'] = $bookableResource->getId();
+                $resource['name']  = $bookableResource->getName();
+                $resource['resourceGroups'] = array_map(function($resourceGroup){
+                    $array = [];
+                    $array['id'] = $resourceGroup->getId();
+                    $array['name'] = $resourceGroup->getName();
+                    return $array;
+                },$bookableResource->getResourceGroups()->toArray());
+
+                $bookableResources[] = $resource;
+           }
+
+           $jsonEvent['bookableResources'] = $bookableResources;
+           $jsonEvent['managedShiftWorks'] = $managedShiftWorks;
+
+           $jsonArray[] = $jsonEvent;
 
             //{ id: '1', resourceId: 'a', start: '2020-09-07T07:00:00', end: '2020-09-07T12:00:00', title: 'Schicht 01', resources: [1,2,3,4,5] },
         }
