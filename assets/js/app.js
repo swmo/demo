@@ -7,7 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
-
+import 'bootstrap';
 
 require('jquery-ui/ui/widgets/droppable');
 require('jquery-ui/ui/widgets/sortable');

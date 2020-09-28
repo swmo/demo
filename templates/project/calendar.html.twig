@@ -3,6 +3,21 @@
 {% block title %}Project Calendar{% endblock %}
 
 {% block body %}
+<p class="text-right">
+    <div class="d-flex justify-content-end">
+    <a class="btn btn-primary" href="" role="button">Add Shift</a>
+
+<div class="btn-group ml-2">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Options
+  </button>
+  <div class="dropdown-menu dropdown-menu-right">
+    <button class="dropdown-item" type="button">add from template</button>
+    <button class="dropdown-item" type="button">save as template</button>
+  </div>
+</div>
+    </div>
+</p>
     <div id="calendar"></div>
 {% endblock %}
 
