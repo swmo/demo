@@ -44,6 +44,11 @@ class Resource
      */
     private $projects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="resources")
+     */
+    private $events;
+
 
     public function __construct()
     {
@@ -51,6 +56,7 @@ class Resource
         $this->shiftWorks = new ArrayCollection();
         $this->organisationUnits = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
 
@@ -180,6 +186,34 @@ class Resource
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
             $project->removeProjectResource($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->addResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            $event->removeResource($this);
         }
 
         return $this;

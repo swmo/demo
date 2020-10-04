@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Event
      * @ORM\Column(type="datetime")
      */
     private $endtime;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Resource::class, inversedBy="events")
+     */
+    private $resources;
+
+    public function __construct()
+    {
+        $this->resources = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,32 @@ class Event
     public function setEndtime(\DateTimeInterface $endtime): self
     {
         $this->endtime = $endtime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Resource[]
+     */
+    public function getResources(): Collection
+    {
+        return $this->resources;
+    }
+
+    public function addResource(Resource $resource): self
+    {
+        if (!$this->resources->contains($resource)) {
+            $this->resources[] = $resource;
+        }
+
+        return $this;
+    }
+
+    public function removeResource(Resource $resource): self
+    {
+        if ($this->resources->contains($resource)) {
+            $this->resources->removeElement($resource);
+        }
 
         return $this;
     }

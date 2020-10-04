@@ -55,6 +55,8 @@ const projectCalendar = function (calendarEl,urlResources, urlEvents, slotMinTim
       let htmlResources = ""
       let htmlOpenResources = "";
       let htmlBookableResources = "";
+      let cssClass = "";
+  
 
      if(arg.event.extendedProps.managedShiftWorks){
       
@@ -62,11 +64,13 @@ const projectCalendar = function (calendarEl,urlResources, urlEvents, slotMinTim
         let htmlHead = "";
         let htmlOpenShift = "";
         let htmlBookedResources = "";
-  
+        
+
 
        // htmlHead = "<b>" + managedShiftWork.resourceGroup.name + "</b>";
 
         if(managedShiftWork.openNumber > 0){
+          cssClass='bg-dark';
           //<div class="col-sm droppable" data-droppable-shift="{{managedShift.getShift().id}}" >
            // htmlOpenShift = "offen " + managedShiftWork.openNumber + '<br />';
             htmlOpenShift = '<div class="droppable" data-droppable-shift="'+managedShiftWork.shift.id+'" data-droppable-resourcegroupid="'+managedShiftWork.resourceGroup.id+'" style="position:relative;"><img class="rounded-circle" style="width:100%;"src="/portrait_placeholder_light.png"><div class="vertical-center text-center text-danger" style="font-size:16px;">'+ managedShiftWork.openNumber +'</div><small>'+managedShiftWork.resourceGroup.name+'</small></div>';
@@ -109,7 +113,7 @@ const projectCalendar = function (calendarEl,urlResources, urlEvents, slotMinTim
    }).join("");
   
 
-      return { html:  htmlOpenResources + "<p>Buchbar:</p>" +htmlBookableResources }
+      return { html: "<div class='" + cssClass + "'>" + htmlOpenResources + "<p>Buchbar:</p>" +htmlBookableResources + "</div>"}
     },
     eventsSet: function(){
       setTimeout(function(){ calendar.setOption('aspectRatio', 1.8);}, 100);

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Dependency;
+use App\Entity\Event;
 use App\Entity\OrganisationUnit;
 use App\Entity\Project;
 use App\Entity\Resource;
@@ -52,6 +53,11 @@ class AppFixtures extends Fixture
         $resourceGroupDa->setName('Dentalassistentin');
         $resourceGroupDa->setCode('dentalassistant');
         $manager->persist($resourceGroupDa);
+
+        $event = new Event();
+        $event->setStarttime(new DateTime('2020-01-01 07:00'));
+        $event->setEndtime(new DateTime('2020-01-01 19:00'));
+       // $event
 
         $resourceGroupDh = new ResourceGroup();
         $resourceGroupDh->setName('Dentalhygienikerin');

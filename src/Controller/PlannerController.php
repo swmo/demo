@@ -12,10 +12,14 @@ use App\Repository\ProjectRepository;
 use App\Service\PlannerManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PlannerController extends AbstractController
 {
+
+
     /**
      * @Route("/", name="planner")
      */
@@ -41,7 +45,7 @@ class PlannerController extends AbstractController
     /**
      * @Route("/shiftwork/add/{shift}/{resource}/{resourceGroup}", name="shiftwork_add")
      */
-    public function shiftworkAdd(Shift $shift, Resource $resource, ResourceGroup $resourceGroup, EntityManagerInterface $em){
+    public function shiftworkAdd(Shift $shift, Resource $resource, ResourceGroup $resourceGroup, EntityManagerInterface $em,Request $request){
 
         $newShiftWork = new ShiftWork();
         $newShiftWork->setShift($shift);
@@ -49,8 +53,10 @@ class PlannerController extends AbstractController
         $newShiftWork->setResourceGroup($resourceGroup);
         $em->persist($newShiftWork);
         $em->flush();
+
+
         
-        return $this->redirectToRoute('planner');
+        return $this->redirectToRouteOrForward('planner',$request);
 
     }
 
@@ -106,6 +112,15 @@ class PlannerController extends AbstractController
         return $this->render('project/calendar.html.twig',[
             'project' => $project
         ]);
+    }
+
+    public function redirectToRouteOrForward(string $route,$request){
+        
+        if($forward = $request->query->get('forward')){
+            return $this->redirect($forward);
+        }
+       
+        return $this->redirectToRoute($route);
     }
     
 
