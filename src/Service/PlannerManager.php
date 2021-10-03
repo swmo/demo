@@ -102,7 +102,11 @@ class ShiftManager {
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['dependency'] = $dependency;
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['shiftWorks'] = array();
             $necessaryMap[$dependency->getResourceGroup()->getCode()]['shift'] = $this->shift;
-        }
+
+            if($dependency->getResourceGroup()->getId()){
+              $necessaryMap[$dependency->getResourceGroup()->getCode()]['bookableResources']= $this->em->getRepository(Resource::class)->findByResourceGroupAndAvailableForShift([$dependency->getResourceGroup()],$this->shift);
+            }
+          }
 
         foreach($this->shift->getShiftWorks() as $shiftWork){
 
@@ -116,6 +120,7 @@ class ShiftManager {
             $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['shiftWorks'][] = $shiftWork;
             $necessaryMap[$shiftWork->getResourceGroup()->getCode()]['openNumber'] = ($necessaryMap[$shiftWork->getResourceGroup()->getCode()]['openNumber']) -1;
         }
+        
 
         return ($necessaryMap);
     }
@@ -137,6 +142,8 @@ class ShiftManager {
         }
         return $array;
     }
+
+   
 
     public function searchBookableRessource(){
         $opens = $this->getOpen();

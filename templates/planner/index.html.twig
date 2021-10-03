@@ -42,6 +42,23 @@
           
                 <div class="col-sm droppable" data-droppable-shift="{{managedShift.getShift().id}}" data-droppable-resourcegroupid="{{nm.resourceGroup.id}}">
                   {{nm.openNumber}}x 
+
+
+                  <br> 
+                  Possible to select:
+                  <br>
+
+                  <ul>
+                    {% if nm.bookableResources > 0 %}
+                        {% for br in nm.bookableResources  %}
+                          <li>
+                            {{br.id}} - {{br.name}}
+
+                             <a href="{{ path('shiftwork_add', {shift: managedShift.getShift().id, resource: br.id , resourceGroup: nm.resourceGroup.id }) }}">add</a>
+                          </li>
+                        {% endfor %}
+                     {% endif %}
+                  </ul>
                 </div>
       
            

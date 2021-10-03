@@ -36,24 +36,64 @@ class ResourceRepository extends ServiceEntityRepository
         $qb->leftJoin('shiftWork.shift', 'shift')
         ;
 
+
+        /*
+
+        You need to use query builder expressions, and this means you need access to the query builder object. Also, the code is easier to write if you generate the subselect list ahead of time:
+*/
+$qbResourcesAlreadyBookedDuringShiftTime = $this->createQueryBuilder('resource');
+
+$resultResourcesAlreadyBookedDuringShiftTime = $qbResourcesAlreadyBookedDuringShiftTime
+->select(['resource.id'])
+        ->leftJoin('resource.shiftWorks', 'shiftWork')
+        ->leftJoin('shiftWork.shift', 'shift')
     
+          ->where($qbResourcesAlreadyBookedDuringShiftTime->expr()->eq('resource.id',60))
+          ->getQuery()
+          ->getResult();
+
+          $qb->andWhere($qb->expr()->notIn('resource.id', ':subQuery'))
+            ->setParameter('subQuery', $resultResourcesAlreadyBookedDuringShiftTime)
+            ;
+              
+          /*
+
+$linked = $qb->select('rl')
+             ->from('MineMyBundle:MineRequestLine', 'rl')
+             ->where($qb->expr()->notIn('rl.request_id', $resourcesAlreadyBookedDuringShiftTime))
+             ->getQuery()
+             ->getResult();
+
+             */
+
+/*
+        
         $qb->andWhere(
             $qb->expr()->orX(
                 $qb->expr()->isNull('shift.end'),
                 $qb->expr()->gt('shift.end', ':end')   
             )
         )->setParameter('end', $shift->getEnd());
+       
 
-            /*
-        $qb
-            ->andWhere(
-                $qb->expr()->lte('shift.start', ':start'))
-                ->setParameter('start', $shift->getStart());
-            */
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->isNull('shift.start'),
+                $qb->expr()->lte('shift.start', ':start')   
+            )
+        )->setParameter('start', $shift->getStart());
+
+        */
 
         $qb->andWhere(
             $qb->expr()->in('resourceGroup.id', $resourceGroupIds)
         );
+
+
+
+
+            
+           // $qb->expr()->notIn('resource.id', $resultResourcesAlreadyBookedDuringShiftTime));
 
          
 
@@ -66,6 +106,9 @@ class ResourceRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
+
+
+
 
     // /**
     //  * @return Resource[] Returns an array of Resource objects

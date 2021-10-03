@@ -74,6 +74,11 @@ class AppFixtures extends Fixture
         $resourceGroupB->setCode('treatmentchair');
         $manager->persist($resourceGroupB);
 
+        $resourceGroupInteroralscan= new ResourceGroup();
+        $resourceGroupInteroralscan->setName('Interoralscanner');
+        $resourceGroupInteroralscan->setCode('interoralscan');
+        $manager->persist($resourceGroupInteroralscan);
+
         $resourceC350left = new Resource();
         $resourceC350left->setName('C350 left Stuhl');
         $resourceC350left->addResourceGroup($resourceGroupB);
@@ -96,6 +101,13 @@ class AppFixtures extends Fixture
         $manager->persist($resourceDentalassistentin01);
 
 
+        $resourceDentalassistentin01 = new Resource();
+        $resourceDentalassistentin01->setName('Dentalassistentin 03 und Zahnartz ');
+        $resourceDentalassistentin01->addResourceGroup($resourceGroupDa);
+        $resourceDentalassistentin01->addResourceGroup($resourceGroupD);
+        $manager->persist($resourceDentalassistentin01);
+
+
         $resourceDentalassistentin02 = new Resource();
         $resourceDentalassistentin02->setName('Dentalassistentin 02');
         $resourceDentalassistentin02->addResourceGroup($resourceGroupDa);
@@ -114,8 +126,14 @@ class AppFixtures extends Fixture
         $shift = new Shift();
         $shift->setStart(new DateTime('2020-01-01 07:00'));
         $shift->setEnd(new DateTime('2020-01-01 12:00'));
-        $shift->setName('Schicht 01');
+        $shift->setName('Schicht 01 - 01');
         $manager->persist($shift);
+
+        $shift01_02 = new Shift();
+        $shift01_02->setStart(new DateTime('2020-01-01 07:00'));
+        $shift01_02->setEnd(new DateTime('2020-01-01 12:00'));
+        $shift01_02->setName('Schicht 01 - 02');
+        $manager->persist($shift01_02);
 
         $shift03 = new Shift();
         $shift03->setStart(new DateTime('2020-01-01 13:00'));
@@ -150,6 +168,27 @@ class AppFixtures extends Fixture
         $dependency = new Dependency();
         $dependency->setNumber(2)
         ->setResourceGroup($resourceGroupDa)
+        ->setShift($shift);
+        $manager->persist($dependency);
+
+        $dependency = new Dependency();
+        $dependency->setNumber(2)
+        ->setResourceGroup($resourceGroupDa)
+        ->setShift($shift01_02);
+        $manager->persist($dependency);
+
+
+
+        $dependency = new Dependency();
+        $dependency->setNumber(2)
+        ->setResourceGroup($resourceGroupDa)
+        ->setShift($shift03);
+        $manager->persist($dependency);
+
+
+        $dependency = new Dependency();
+        $dependency->setNumber(1)
+        ->setResourceGroup($resourceGroupInteroralscan)
         ->setShift($shift);
         $manager->persist($dependency);
 
